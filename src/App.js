@@ -29,6 +29,18 @@ function App() {
   // lista de letras
   const [letters, setLetters] = useState([]);
 
+  // letras adivinhadas
+  const [guessedLetters, setGuessedLetters] = useState([]);
+
+  // letras erradas
+  const [wrongLetters, setWrongLetters] = useState([]);
+
+  // tentativas possíveis
+  const [guesses, setGuess] = useState(3);
+
+  // pontuação de acerto
+  const [score, setScore] = useState(0);
+
   // função para escolher palavra e categoria
   const pickWordAndCategory = () => {
     // escolhendo categoria aleatória
@@ -76,7 +88,16 @@ function App() {
 
       {/* Direcionando usuário para os componentes caso a condição seja true */}
       {gameStage === 'start' && <StartScreen startGame={startGame} />}
-      {gameStage === 'game' && <Game verifyLetter={verifyLetter} />}
+      {gameStage === 'game' &&
+        <Game
+          verifyLetter={verifyLetter}
+          pickedWord={pickedWord}
+          pickedCategory={pickedCategory}
+          letters={letters}
+          guessedLetters={guessedLetters}
+          wrongLetters={wrongLetters}
+          guesses={guesses}
+          score={score} />}
       {gameStage === 'end' && <GameOver retry={retry} />}
     </div>
   );
