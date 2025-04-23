@@ -74,9 +74,28 @@ function App() {
   }
 
   // função para processar a letra de entrada (Finalizar jogo)
-  const verifyLetter = () => {
-    setGameStage(stages[2].name);
-  }
+  const verifyLetter = (letter) => {
+
+    const normalizedLetter = letter.toLowerCase();
+
+    // verficando se a letra já foi usada
+    if (guessedLetters.includes(normalizedLetter) || wrongLetters.includes(normalizedLetter)) {
+      return;
+    }
+
+    // pegar letra adivinhada ou remover
+    if (letters.includes(normalizedLetter)) {
+      setGuessedLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters, normalizedLetter
+      ]);
+    } else {
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters, normalizedLetter,
+      ]);
+    }
+    console.log(guessedLetters);
+    console.log(wrongLetters);
+  };
 
   // reiniciar o jogo
   const retry = () => {
