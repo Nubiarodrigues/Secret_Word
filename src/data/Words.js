@@ -1,4 +1,4 @@
-export const categorias = {
+export const wordsList = {
     frutas: ["Maçã", "Banana", "Laranja", "Abacaxi", "Morango", "Uva", "Manga", "Pêssego"],
     legumes: ["Cenoura", "Batata", "Beterraba", "Ervilha", "Abobrinha", "Chuchu", "Vagem", "Berinjela"],
     bebidas: ["Água", "Suco", "Refrigerante", "Café", "Chá", "Leite", "Vinho", "Cerveja"],
