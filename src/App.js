@@ -20,8 +20,44 @@ function App() {
   // Esse estado vai armazenar o array de palavras para o jogo
   const [words] = useState(wordsList);
 
+  // palavra escolhida
+  const [pickedWord, setPickedWord] = useState("");
+
+  // categoria escolhida
+  const [pickedCategory, setPickedCategory] = useState("");
+
+  // lista de letras
+  const [letters, setLetters] = useState([]);
+
+  // função para escolher palavra e categoria
+  const pickWordAndCategory = () => {
+    // escolhendo categoria aleatória
+    const categories = Object.keys(words);
+    const category = categories[Math.floor(Math.random() * Object.keys(categories).length)]; // percorrendo para trazer uma categoria aleatória
+    console.log(category);
+
+    // Escolhendo palavra aleatória
+    const word = words[category][Math.floor(Math.random() * words[category].length)];
+    console.log(word);
+
+    return { word, category };
+  };
+
   // função para iniciar o jogo 
   const startGame = () => {
+    const { word, category } = pickWordAndCategory(); // escolher a palavra e categoria de forma desestruturada
+
+    let wordLetters = word.split(""); // quebra a string em uma array de letras
+    wordLetters = wordLetters.map((l) => l.toLowerCase()); // troca letras maiúsculas por minúsculas
+
+    console.log(word, category);
+    console.log(wordLetters);
+
+    // preencher estados
+    setPickedWord(word);
+    setPickedCategory(category);
+    setLetters(wordLetters);
+
     setGameStage(stages[1].name);
   }
 
