@@ -77,6 +77,9 @@ function App() {
     setPickedCategory(category);
     setLetters(wordLetters);
 
+    // resetar tentativas
+    setGuesses(guessesQty);
+
     setGameStage(stages[1].name);
   }, [pickWordAndCategory]);
 
