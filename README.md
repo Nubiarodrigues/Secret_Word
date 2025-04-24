@@ -23,12 +23,12 @@ Este é um jogo simples feito com React, onde o jogador precisa adivinhar a pala
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/jogo-palavra-secreta-react.git
+   git clone https://github.com/Nubiarodrigues/Secret_Word.git
    ```
 
 2. Acesse o diretório:
    ```bash
-   cd jogo-palavra-secreta-react
+   cd secretword
    ```
 
 3. Instale as dependências:
