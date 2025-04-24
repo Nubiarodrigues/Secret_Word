@@ -14,6 +14,9 @@ const stages = [
 
 function App() {
 
+  // valor padrão para tenativas
+  const guessesQty = 3;
+
   // inicializando o estado com o primeiro estágio do jogo "start"
   const [gameStage, setGameStage] = useState(stages[0].name);
 
@@ -36,13 +39,13 @@ function App() {
   const [wrongLetters, setWrongLetters] = useState([]);
 
   // tentativas possíveis
-  const [guesses, setGuess] = useState(3);
+  const [guesses, setGuesses] = useState(guessesQty);
 
   // pontuação de acerto
   const [score, setScore] = useState(0);
 
   // função para escolher palavra e categoria
-  const pickWordAndCategory = () => {
+  const pickWordAndCategory = useCallback(() => {
     // escolhendo categoria aleatória
     const categories = Object.keys(words);
     const category = categories[Math.floor(Math.random() * Object.keys(categories).length)]; // percorrendo para trazer uma categoria aleatória
@@ -53,10 +56,14 @@ function App() {
     console.log(word);
 
     return { word, category };
-  };
+  }, [words]);
 
   // função para iniciar o jogo 
-  const startGame = () => {
+  const startGame = useCallback(() => {
+
+    // limpar palavras
+    ClearLetterStates();
+
     const { word, category } = pickWordAndCategory(); // escolher a palavra e categoria de forma desestruturada
 
     let wordLetters = word.split(""); // quebra a string em uma array de letras
@@ -71,7 +78,7 @@ function App() {
     setLetters(wordLetters);
 
     setGameStage(stages[1].name);
-  }
+  }, [pickWordAndCategory]);
 
   // função para processar a letra de entrada (Finalizar jogo)
   const verifyLetter = (letter) => {
@@ -92,13 +99,47 @@ function App() {
       setWrongLetters((actualWrongLetters) => [
         ...actualWrongLetters, normalizedLetter,
       ]);
+
+      setGuesses((actualGuesses) => actualGuesses - 1); // a cada tentativa, reduz uma chance
     }
-    console.log(guessedLetters);
-    console.log(wrongLetters);
   };
+
+  // função para limpar os estados 
+  const ClearLetterStates = () => {
+    setGuessedLetters([]);
+    setWrongLetters([]);
+  };
+
+  useEffect(() => {
+    if (guesses <= 0) {
+      // redefinir todos os estados
+      ClearLetterStates();
+      setGameStage(stages[2].name);
+    }
+
+  }, [guesses])
+
+  // verficar condições 
+  useEffect(() => {
+
+    const uniqueLetters = [...new Set(letters)]; // remove duplicações de letras, ex: a,b,a,c,b, ele retira toda as duplicações, então: a,b,c
+    console.log(uniqueLetters);
+
+    // condições
+    if (guessedLetters.length === uniqueLetters.length) {
+      // adiconar a pontuação
+      setScore((actualScore) => (actualScore += 100));
+
+      // reiniciar o jogo com nova palavra
+      startGame();
+    }
+
+  }, [guessedLetters, letters, startGame])
 
   // reiniciar o jogo
   const retry = () => {
+    setScore(0);
+    setGuesses(guessesQty);
     setGameStage(stages[0].name);
   }
 
@@ -117,7 +158,7 @@ function App() {
           wrongLetters={wrongLetters}
           guesses={guesses}
           score={score} />}
-      {gameStage === 'end' && <GameOver retry={retry} />}
+      {gameStage === 'end' && <GameOver retry={retry} score={score} />}
     </div>
   );
 }
